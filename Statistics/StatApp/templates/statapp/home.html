@@ -1,0 +1,44 @@
+{% extends 'statapp/base.html' %}
+
+{% block title %}Football Competitions{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Football Competitions</h1>
+    <a href="{% url 'refresh_all' %}" class="btn btn-primary">
+        <i class="fas fa-sync-alt"></i> Refresh All
+    </a>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for competition in competitions %}
+    <div class="col">
+        <div class="card h-100 competition-card">
+            <div class="card-body">
+                <h5 class="card-title">{{ competition.name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ competition.country }}</h6>
+                <p class="card-text">
+                    Season: 
+                    {% if competition.start_date and competition.end_date %}
+                        {{ competition.start_date|date:"M Y" }} - {{ competition.end_date|date:"M Y" }}
+                    {% else %}
+                        Season information unavailable
+                    {% endif %}
+                </p>
+            </div>
+            <div class="card-footer bg-transparent border-top-0">
+                <a href="{% url 'competition_detail' competition.code %}" class="btn btn-outline-primary btn-sm">View Standings</a>
+                <a href="{% url 'matches' competition.code %}" class="btn btn-outline-secondary btn-sm">Matches</a>
+                <a href="{% url 'scorers' competition.code %}" class="btn btn-outline-success btn-sm">Top Scorers</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">
+            No competitions found. Click "Refresh All" to fetch competitions.
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

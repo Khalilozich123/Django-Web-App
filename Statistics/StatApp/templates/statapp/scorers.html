@@ -1,0 +1,70 @@
+{% extends 'statapp/base.html' %}
+
+{% block title %}{{ competition.name }} Top Scorers{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Competitions</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'competition_detail' competition.code %}">{{ competition.name }}</a></li>
+        <li class="breadcrumb-item active">Top Scorers</li>
+    </ol>
+</nav>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>{{ competition.name }} Top Scorers</h1>
+    <div>
+        <a href="{% url 'competition_detail' competition.code %}" class="btn btn-outline-primary me-2">
+            <i class="fas fa-table"></i> Standings
+        </a>
+        <a href="{% url 'matches' competition.code %}" class="btn btn-outline-success me-2">
+            <i class="fas fa-futbol"></i> Matches
+        </a>
+        <a href="{% url 'refresh_competition' competition.code %}" class="btn btn-primary">
+            <i class="fas fa-sync-alt"></i> Refresh Data
+        </a>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-trophy me-1"></i>
+        Top Scorers
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Player</th>
+                        <th>Team</th>
+                        <th>Goals</th>
+                        <th>Assists</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for scorer in scorers %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ scorer.name }}</td>
+                        <td>
+                            {% if scorer.team.logo_url %}
+                            <img src="{{ scorer.team.logo_url }}" alt="{{ scorer.team.name }}" class="team-logo me-2">
+                            {% endif %}
+                            {{ scorer.team.name }}
+                        </td>
+                        <td><strong>{{ scorer.goals }}</strong></td>
+                        <td>{{ scorer.assists|default:"0" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">No scorer data available. Click "Refresh Data" to fetch top scorers.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

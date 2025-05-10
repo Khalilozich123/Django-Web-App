@@ -1,0 +1,108 @@
+{% extends 'statapp/base.html' %}
+
+{% block title %}{{ competition.name }} Matches{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Competitions</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'competition_detail' competition.code %}">{{ competition.name }}</a></li>
+        <li class="breadcrumb-item active">Matches</li>
+    </ol>
+</nav>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>{{ competition.name }} Matches</h1>
+    <div>
+        <a href="{% url 'competition_detail' competition.code %}" class="btn btn-outline-primary me-2">
+            <i class="fas fa-table"></i> Standings
+        </a>
+        <a href="{% url 'scorers' competition.code %}" class="btn btn-outline-success me-2">
+            <i class="fas fa-trophy"></i> Top Scorers
+        </a>
+        <a href="{% url 'refresh_competition' competition.code %}" class="btn btn-primary">
+            <i class="fas fa-sync-alt"></i> Refresh Data
+        </a>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <span><i class="fas fa-futbol me-1"></i> Match Schedule</span>
+            <form method="get" class="d-flex">
+                <select name="matchday" class="form-select me-2" onchange="this.form.submit()">
+                    <option value="">All Matchdays</option>
+                    {% for day in matchday_options %}
+                    <option value="{{ day }}" {% if current_matchday == day|stringformat:"s" %}selected{% endif %}>Matchday {{ day }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Matchday</th>
+                        <th>Home Team</th>
+                        <th>Score</th>
+                        <th>Away Team</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for match in matches %}
+                    <tr>
+                        <td>{{ match.utc_date|date:"d M Y H:i" }}</td>
+                        <td>{{ match.matchday }}</td>
+                        <td>
+                            {% if match.home_team.logo_url %}
+                            <img src="{{ match.home_team.logo_url }}" alt="{{ match.home_team.name }}" class="team-logo me-2">
+                            {% endif %}
+                            {{ match.home_team.name }}
+                        </td>
+                        <td class="text-center">
+                            {% if match.status == 'FINISHED' or match.status == 'IN_PLAY' or match.status == 'PAUSED' %}
+                                {% if match.home_score is not None and match.away_score is not None %}
+                                    <strong>{{ match.home_score }} - {{ match.away_score }}</strong>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            {% else %}
+                                vs
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if match.away_team.logo_url %}
+                            <img src="{{ match.away_team.logo_url }}" alt="{{ match.away_team.name }}" class="team-logo me-2">
+                            {% endif %}
+                            {{ match.away_team.name }}
+                        </td>
+                        <td>
+                            {% if match.status == 'IN_PLAY' or match.status == 'PAUSED' %}
+                                <span class="status-badge status-live">LIVE</span>
+                            {% elif match.status == 'FINISHED' %}
+                                <span class="status-badge status-finished">FINISHED</span>
+                            {% elif match.status == 'SCHEDULED' %}
+                                <span class="status-badge status-scheduled">SCHEDULED</span>
+                            {% elif match.status == 'POSTPONED' or match.status == 'SUSPENDED' or match.status == 'CANCELED' %}
+                                <span class="status-badge status-postponed">{{ match.status }}</span>
+                            {% else %}
+                                {{ match.status }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center">No matches data available. Click "Refresh Data" to fetch matches.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
