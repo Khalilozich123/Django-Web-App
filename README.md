@@ -41,7 +41,7 @@ The app supports major football competitions including:
 1. **Clone the repository**
    ```bash
    git clone https://github.com/Khalilozich123/Django-Web-App.git
-   cd football-stats-django
+   cd Django-Web-App
    ```
 
 2. **Create a virtual environment**
@@ -57,6 +57,7 @@ The app supports major football competitions including:
 
 4. **Set up the database**
    ```bash
+   cd Statistics
    python manage.py makemigrations
    python manage.py migrate
    ```
