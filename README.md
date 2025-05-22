@@ -1,53 +1,94 @@
-⚽ Football Statistics Django Web App
-Une application web moderne développée avec Django, permettant d'afficher en temps réel les statistiques des principaux championnats de football à travers le monde. Suivez les classements, les résultats, les matchs à venir, et les meilleurs buteurs de vos compétitions favorites.
+# ⚽ Football Statistics Django Web App
 
-🌟 Fonctionnalités
-📊 Classements en direct : Affichage des tableaux de ligue avec les positions, points, buts et autres statistiques clés.
+A modern Django web application that displays live football statistics from major leagues around the world. Get real-time standings, match results, fixtures, and top scorer information for your favorite competitions.
 
-⚽ Résultats & Calendrier : Consultation des résultats passés et des matchs à venir avec des détails complets.
+![Django](https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white)
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Bootstrap](https://img.shields.io/badge/bootstrap-%23563D7C.svg?style=for-the-badge&logo=bootstrap&logoColor=white)
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
 
-🏆 Meilleurs Buteurs : Suivi des meilleurs buteurs par compétition.
+## 🌟 Features
 
-🔄 Données en temps réel : Récupération automatique des données via l'API football-data.org, avec système de cache intégré.
+- **📊 Live League Standings** - View current league tables with team positions, points, goals, and statistics
+- **⚽ Match Results & Fixtures** - Browse past results and upcoming matches with detailed information
+- **🏆 Top Scorers** - Track leading goalscorers across different competitions
+- **🔄 Real-time Data** - Automatic data fetching from football-data.org API with smart caching
+- **📱 Responsive Design** - Mobile-friendly interface built with Bootstrap
+- **🎯 Competition Filtering** - Filter matches by matchday and competition
+- **⚡ Fast Performance** - Built-in caching system to minimize API calls and improve speed
 
-📱 Design Responsive : Interface mobile-friendly conçue avec Bootstrap.
+## 🏟️ Supported Competitions
 
-🎯 Filtrage par compétition : Filtrage des matchs par journée et compétition.
+The app supports major football competitions including:
+- Premier League (England)
+- La Liga (Spain)
+- Bundesliga (Germany)
+- Serie A (Italy)
+- Ligue 1 (France)
+- UEFA Champions League
+- And many more international competitions
 
-⚡ Performance optimisée : Système de cache pour réduire les appels API et accélérer le chargement.
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Python 3.8 or higher
+- Django 4.0+
+- Internet connection for API data
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Khalilozich123/Django-Web-App.git
+   cd football-stats-django
+   ```
+
+2. **Create a virtual environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. **Install dependencies**
+   ```bash
+   pip install django requests
+   ```
+
+4. **Set up the database**
+   ```bash
+   python manage.py makemigrations
+   python manage.py migrate
+   ```
+
+5. **Create a superuser (optional)**
+   ```bash
+   python manage.py createsuperuser
+   ```
+
+6. **Run the development server**
+   ```bash
+   python manage.py runserver
+   ```
+
+7. **Access the application**
+   - Open your browser and navigate to `http://localhost:8000`
+   - Click "Refresh All" to fetch initial data from the API
 
 
-🧪 Installation
-1. Cloner le dépôt
-        git clone https://github.com/Khalilozich123/Django-Web-App.git
-        cd Django-Web-App
-2. Créer un environnement virtuel
-        python -m venv venv
-        source venv/bin/activate
-3. Installer les dépendances
-        pip install django requests
-4. Configurer la base de données
-        cd Statistics
-        python manage.py makemigrations
-        python manage.py migrate
-5. Lancer le serveur
-        python manage.py runserver
-6. Accéder à l'application
-        Ouvrez votre navigateur à l'adresse :
-        👉 http://localhost:8000
-        Cliquez sur "Refresh All" pour initialiser les données via l'API.
 
+## 🛠️ Project Structure
 
-🛠️ Structure du projet
-football-stats-django/
+```
+DjangoApp/
 ├── Statistics/
 │   ├── StatApp/
-│   │   ├── models.py             # Modèles de base de données
-│   │   ├── views.py              # Contrôleurs de vues
-│   │   ├── services.py           # Intégration avec l'API football-data
-│   │   ├── urls.py               # Routage de l'application
-│   │   ├── admin.py              # Configuration de l’interface d’admin Django
-│   │   ├── templates/
+│   │   ├── models.py          # Database models
+│   │   ├── views.py           # View controllers
+│   │   ├── services.py        # API integration service
+│   │   ├── urls.py            # URL routing
+│   │   ├── admin.py           # Django admin configuration
+│   │   ├── templates/         # HTML templates
 │   │   │   └── statapp/
 │   │   │       ├── base.html
 │   │   │       ├── home.html
@@ -56,9 +97,35 @@ football-stats-django/
 │   │   │       └── scorers.html
 │   │   └── management/
 │   │       └── commands/
-│   │           └── update_football_data.py  # Commande personnalisée pour maj API
+│   │           └── update_football_data.py
 │   ├── settings.py
 │   ├── urls.py
 │   └── wsgi.py
 ├── manage.py
-   
+└── README.md
+```
+
+
+
+## 📊 Data Management
+
+### Manual Data Update
+Use the Django admin interface or click "Refresh Data" buttons in the web interface.
+
+### Automated Data Updates
+Run the management command:
+```bash
+# Update all competitions
+python manage.py update_football_data --all
+
+# Update specific competition (e.g., Premier League)
+python manage.py update_football_data --competition=PL
+```
+
+### Scheduling Updates
+For production, set up a cron job to update data regularly:
+```bash
+# Add to crontab for hourly updates
+0 * * * * /path/to/venv/bin/python /path/to/project/manage.py update_football_data --all
+```
+
