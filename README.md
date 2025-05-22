@@ -19,5 +19,46 @@ Une application web moderne développée avec Django, permettant d'afficher en t
 
 🧪 Installation
 1. Cloner le dépôt
-        git clone https://github.com/yourusername/-stats-django.git
-        cd football-stats-django
+        git clone https://github.com/Khalilozich123/Django-Web-App.git
+        cd Django-Web-App
+2. Créer un environnement virtuel
+        python -m venv venv
+        source venv/bin/activate
+3. Installer les dépendances
+        pip install django requests
+4. Configurer la base de données
+        cd Statistics
+        python manage.py makemigrations
+        python manage.py migrate
+5. Lancer le serveur
+        python manage.py runserver
+6. Accéder à l'application
+        Ouvrez votre navigateur à l'adresse :
+        👉 http://localhost:8000
+        Cliquez sur "Refresh All" pour initialiser les données via l'API.
+
+
+🛠️ Structure du projet
+football-stats-django/
+├── Statistics/
+│   ├── StatApp/
+│   │   ├── models.py             # Modèles de base de données
+│   │   ├── views.py              # Contrôleurs de vues
+│   │   ├── services.py           # Intégration avec l'API football-data
+│   │   ├── urls.py               # Routage de l'application
+│   │   ├── admin.py              # Configuration de l’interface d’admin Django
+│   │   ├── templates/
+│   │   │   └── statapp/
+│   │   │       ├── base.html
+│   │   │       ├── home.html
+│   │   │       ├── competition_detail.html
+│   │   │       ├── matches.html
+│   │   │       └── scorers.html
+│   │   └── management/
+│   │       └── commands/
+│   │           └── update_football_data.py  # Commande personnalisée pour maj API
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── manage.py
+   
